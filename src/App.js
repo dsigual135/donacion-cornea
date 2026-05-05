@@ -47,7 +47,7 @@ const documents = {
     title: "Riscos biològics",
     subtitle: "Hoja de evaluación del riesgo biológico",
     help: "Completar todas las preguntas con la familia. Si alguna respuesta es SÍ, ampliar información para comunicarlo al Donor Center.",
-    file: "/mnt/data/AVALUACIÓ DEL RISC BIOLÒGIC PDF (1).pdf",
+    file: "/riscos.png",
   },
   consent: {
     title: "Consentiment informat",
@@ -113,6 +113,31 @@ function HelpBox({ children, tone = "blue" }) {
   return <div className={`rounded-2xl border p-4 text-sm leading-relaxed ${styles[tone]}`}>{children}</div>;
 }
 
+function DocumentImage({ doc, variant = "preview" }) {
+  const [hasError, setHasError] = useState(false);
+
+  if (!doc.file || hasError) {
+    return (
+      <div className="flex h-full w-full items-center justify-center rounded-xl border border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-500">
+        Imatge del document no carregada. Revisa que el fitxer estigui a public/riscos.png
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={doc.file}
+      alt={doc.title}
+      onError={() => setHasError(true)}
+      className={
+        variant === "modal"
+          ? "w-full h-auto rounded-xl border bg-white"
+          : "h-full w-full object-contain rounded-xl border border-slate-200 bg-white"
+      }
+    />
+  );
+}
+
 function DocumentPreview({ doc, onOpen }) {
   return (
     <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
@@ -125,11 +150,7 @@ function DocumentPreview({ doc, onOpen }) {
       </div>
       <div className="flex h-72 items-center justify-center bg-white p-3">
         {doc.file ? (
-          <iframe
-            src={doc.file}
-            title={doc.title}
-            className="h-full w-full rounded-xl border border-slate-200 bg-white"
-          />
+          <DocumentImage doc={doc} />
         ) : (
           <div className="h-48 w-36 rounded-xl border border-slate-300 bg-gradient-to-br from-white to-slate-100 p-3 shadow-sm">
             <div className="mb-4 h-3 w-24 rounded bg-slate-300" />
@@ -168,11 +189,7 @@ function Modal({ doc, onClose }) {
         <div className="max-h-[70vh] overflow-y-auto p-5">
           <div className="mb-4 rounded-2xl border bg-slate-50 p-3">
             {doc.file ? (
-              <iframe
-                src={doc.file}
-                title={doc.title}
-                className="w-full h-[60vh] rounded-xl border bg-white"
-              />
+              <DocumentImage doc={doc} variant="modal" />
             ) : (
               <div className="flex aspect-[3/4] items-center justify-center rounded-xl border bg-white p-6 text-center text-sm text-slate-400 shadow-sm">
                 Aquí es mostrarà el document
@@ -286,9 +303,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 px-3 py-6">
-      <div className="mx-auto min-h-[92vh] w-full max-w-md overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-xl">
-        <div className="px-3 py-3 text-white" style={{ backgroundColor: "#afbd13" }}>
+    <div className="min-h-[100dvh] bg-slate-100 px-0 py-0 sm:px-3 sm:py-6">
+      <div className="mx-auto min-h-[100dvh] w-full max-w-md overflow-hidden rounded-none border-0 bg-white shadow-none sm:min-h-[92vh] sm:rounded-[2rem] sm:border sm:border-slate-200 sm:shadow-xl">
+        <div className="px-3 pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 text-white" style={{ backgroundColor: "#afbd13" }}>
           <div className="mb-2 grid grid-cols-5 items-center gap-2">
             <div className="col-span-1 flex aspect-square items-center justify-center rounded-xl overflow-hidden">
               <img
@@ -458,5 +475,4 @@ export default function App() {
     </div>
   );
 }
-
 
