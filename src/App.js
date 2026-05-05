@@ -131,8 +131,8 @@ function DocumentImage({ doc, variant = "preview" }) {
       onError={() => setHasError(true)}
       className={
         variant === "modal"
-          ? "w-full h-auto rounded-xl border bg-white"
-          : "h-full w-full object-contain rounded-xl border border-slate-200 bg-white"
+          ? "w-full max-h-[70vh] object-contain rounded-xl border bg-white"
+          : "max-h-full max-w-full object-contain rounded-xl border border-slate-200 bg-white"
       }
     />
   );
@@ -148,7 +148,7 @@ function DocumentPreview({ doc, onOpen }) {
           <p className="text-xs text-slate-500">{doc.subtitle}</p>
         </div>
       </div>
-      <div className="flex h-72 items-center justify-center bg-white p-3">
+      <div className="flex h-56 items-center justify-center bg-white p-3 overflow-hidden">
         {doc.file ? (
           <DocumentImage doc={doc} />
         ) : (
@@ -475,4 +475,3 @@ export default function App() {
     </div>
   );
 }
-
